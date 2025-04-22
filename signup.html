@@ -45,33 +45,35 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebas
     measurementId: "G-F21WW65X6C"
   };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getDatabase(app);
 
-// Handle Signup
-document.getElementById("signup-btn").addEventListener("click", () => {
-  // const username = document.getElementById("signup-username").value;
-  const email = document.getElementById("signup-email").value;
-  const password = document.getElementById("signup-password").value;
-  const whatsapp = document.getElementById("signup-whatsapp").value;
+const signupForm = document.getElementById("signupForm");
+
+signupForm.addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const email = document.getElementById("signupEmail").value.trim();
+  const password = document.getElementById("signupPassword").value.trim();
+  const username = document.getElementById("signupUsername").value.trim();
+  const whatsapp = document.getElementById("signupWhatsapp").value.trim();
 
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      const user = userCredential.user;
-      // Save extra info to database
-      set(ref(db, 'users/' + user.uid), {
-        username: username,
-        email: email,
-        whatsapp: whatsapp
-      });
+      const user = {
+        uid: userCredential.user.uid,
+        email,
+        username,
+        whatsapp
+      };
 
+      localStorage.setItem("loggedInUser", JSON.stringify(user));
       alert("Account created successfully!");
-      window.location.href = "login.html";
+      window.location.href = "index.html";
     })
     .catch((error) => {
-      alert("Signup error: " + error.message);
+      console.error("Signup error:", error.message);
+      alert("Signup failed: " + error.message);
     });
 });
   
