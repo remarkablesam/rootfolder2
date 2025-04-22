@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Like Button with Hearts</title>
+  <style>
+    button {
+      font-size: 2em;
+      cursor: pointer;
+      border: none;
+      background: none;
+      padding: 5px;
+      transition: transform 0.2s ease;
+    }
+
+    button.liked {
+      color: red;
+      animation: pop 0.3s ease;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.4); }
+      100% { transform: scale(1); }
+    }
+
+    #likeCount {
+      font-size: 1.2em;
+      margin-left: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <button id="likeButton">🤍</button>
+  <span id="likeCount">0</span>
+
+  <script>
+    const likeButton = document.getElementById('likeButton');
+    const likeCountElement = document.getElementById('likeCount');
+    let likeCount = 0;
+    let isLiked = false;
+
+    likeButton.addEventListener('click', () => {
+      isLiked = !isLiked;
+
+      if (isLiked) {
+        likeCount++;
+        likeButton.textContent = '❤️';
+        likeButton.classList.add('liked');
+      } else {
+        likeCount = Math.max(0, likeCount - 1); // Ensure no negative values
+        likeButton.textContent = '🤍';
+        likeButton.classList.remove('liked');
+      }
+
+      likeCountElement.textContent = likeCount;
+    });
+  </script>
+
+</body>
+</html>
